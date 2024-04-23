@@ -12,20 +12,14 @@ PLUG_NAME = "import-kallsyms"
 
 class ImportFilePlugin(idaapi.plugin_t):
     flags = idaapi.PLUGIN_UNL
-    comment = "Import /proc/kallsyms for the kernel"
-    help = f"Select '{PLUG_NAME}' from the File menu"
+    comment = "Import /proc/kallsyms for Linux Kernel"
+    help = ""
     wanted_name = PLUG_NAME
     wanted_hotkey = ""
 
     def init(self):
         """ Initialize the plugin """
-        self.menu_context = None
         return idaapi.PLUGIN_OK
-
-    def term(self):
-        """ Terminate the plugin """
-        if self.menu_context is not None:
-            idaapi.del_menu_item(self.menu_context)
 
     def run(self, arg):
         """ Execute the plugin """
@@ -49,10 +43,6 @@ class ImportFilePlugin(idaapi.plugin_t):
                     ida_name.set_name(func_address, func_dict[func_address], ida_name.SN_NOWARN)
 
             print(f"[{PLUG_NAME}] Import kallsyms successfully.")
-
-    def add_menu_item(self):
-        """ Add menu item to the File menu """
-        self.menu_context = idaapi.add_menu_item("File/", "Import /proc/kallsyms", "", 0, self.run, (None,))
 
 # Register the plugin with IDA Pro
 def PLUGIN_ENTRY():
